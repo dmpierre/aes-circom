@@ -36,14 +36,14 @@ describe("AES256 CTR Test", () => {
             ks_buffer.push(...utils.intToLEBuffer(ks[i], 4));
         }
         var ks_bits = utils.buffer2bits(ks_buffer);
-		
+		console.log(ks_bits.length);
         var ctr_buffer = [];
         for(let i=0; i<ctr.length; i++)
         {
             ctr_buffer.push(...utils.intToLEBuffer(ctr[i], 4));
         }
         var ctr_bits = utils.buffer2bits(ctr_buffer);
-
+        console.log(ctr_bits.length);
         let witness = await cir.calculateWitness({"ks":ks_bits, "in":utils.buffer2bits(inp), "ctr":ctr_bits});
         witness = witness.slice(1,129);
 		
