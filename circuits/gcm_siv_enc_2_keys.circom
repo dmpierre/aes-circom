@@ -89,9 +89,9 @@ template GCM_SIV_ENC_2_Keys(n_bits_aad, n_bits_msg)
     for(i=0; i<64; i++) Record_Enc_Key[i+64*2] = _T[64*8+i];
     for(i=0; i<64; i++) Record_Enc_Key[i+64*3] = _T[64*10+i];
 
-    component polyval_1 = POLYVAL(n_bits_aad);
     if(aad_len != 0)
     {
+        component polyval_1 = POLYVAL(n_bits_aad);
         for(i=0; i<n_bits_aad; i++) polyval_1.in[i] <== AAD[i];
         for(i=0; i<128; i++) polyval_1.H[i] <== Record_Hash_Key[i];
         for(i=0; i<2; i++)

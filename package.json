@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Electron-Labs/aes_gcm-circom#readme",
   "devDependencies": {
-    "circom_tester": "0.0.11",
+    "circom_tester": "0.0.19",
     "circomlib": "^2.0.3",
     "circomlibjs": "^0.1.2",
     "eslint": "^8.20.0",
