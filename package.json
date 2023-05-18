@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/_mocha --timeout 1000000",
+    "test-image": "node node_modules/mocha/bin/_mocha --grep='Should carry out bench correctly' --timeout 1000000",
     "lint-check": "eslint test/*.test.js",
     "lint": "eslint test/*.test.js --fix"
   },
@@ -28,5 +29,8 @@
     "eslint": "^8.20.0",
     "mocha": "^10.0.0",
     "mocha-logger": "^1.0.8"
+  },
+  "dependencies": {
+    "jpeg-js": "^0.4.4"
   }
 }
