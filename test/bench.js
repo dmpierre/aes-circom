@@ -4,6 +4,7 @@ const wasmTester = require("circom_tester").wasm;
 const utils = require("./utils");
 const fs = require("fs");
 const jpeg = require("jpeg-js");
+const snarkjs = require("snarkjs");
 
 const compile = async (filename) => {
     const compileStart = Date.now();
@@ -12,6 +13,7 @@ const compile = async (filename) => {
     return [cir, compileEnd - compileStart];
 };
 
+
 const loadImg = (filename) => {
     const img = jpeg.decode(fs.readFileSync(path.join(__dirname, "img", filename)), {
         formatAsRGBA: false
@@ -19,24 +21,58 @@ const loadImg = (filename) => {
     return img;
 };
 
+(BigInt.prototype).toJSON = function () {
+    return this.toString();
+};
+
+
+const formatToBits = (intArray) => {
+    var arrayBuffer = [];
+    for (let i = 0; i < intArray.length; i++) {
+        arrayBuffer.push(...utils.intToLEBuffer(intArray[i], 4));
+    }
+    var arrayBits = utils.buffer2bits(arrayBuffer);
+    return arrayBits;
+}
+
 /**
- * Calculates witness
+ * Calculates witness and prove - time in ms
  * @param {wasmCircuit} cir 
  * @param {Uint8Array} inp
  * @param {ks} ks
  * @param {ctr} ctr 
 */
+const calcWitnessAndProve = async (wasmFileName, zkeyFileName, inp, ks, ctr) => {
+
+    const wasmPath = path.join(__dirname, "circuits/img_encrypt", `${wasmFileName}_js/${wasmFileName}.wasm`);
+    const zkeyPath = path.join(__dirname, "zkeys", `${zkeyFileName}.zkey`);
+
+    const ks_bits = formatToBits(ks);
+    const ctr_bits = formatToBits(ctr);
+
+    fs.writeFileSync("witness.json", JSON.stringify({ "ks": ks_bits, "in": utils.buffer2bits(inp), "ctr": ctr_bits }));
+
+    const witnessStart = Date.now();
+    const wtns = { type: "mem" }
+
+    const witness = await snarkjs.wtns.calculate(
+        { "ks": ks_bits, "in": utils.buffer2bits(inp), "ctr": ctr_bits },
+        wasmPath,
+        wtns
+    )
+    const witnessEnd = Date.now();
+
+    const proofStart = Date.now();
+    const proof = await snarkjs.groth16.prove(zkeyPath, wtns, undefined)
+    const proofEnd = Date.now();
+
+    return [witnessEnd - witnessStart, proofEnd - proofStart];
+};
+
 const calculateWitness = async (cir, inp, ks, ctr) => {
-    var ks_buffer = [];
-    for (let i = 0; i < ks.length; i++) {
-        ks_buffer.push(...utils.intToLEBuffer(ks[i], 4));
-    }
-    var ks_bits = utils.buffer2bits(ks_buffer);
-    var ctr_buffer = [];
-    for (let i = 0; i < ctr.length; i++) {
-        ctr_buffer.push(...utils.intToLEBuffer(ctr[i], 4));
-    }
-    var ctr_bits = utils.buffer2bits(ctr_buffer);
+
+    var ks_bits = formatToBits(ks);
+    var ctr_bits = formatToBits(ctr);
 
     const witnessStart = Date.now();
     let witness = await cir.calculateWitness({ "ks": ks_bits, "in": utils.buffer2bits(inp), "ctr": ctr_bits });
@@ -47,5 +83,7 @@ const calculateWitness = async (cir, inp, ks, ctr) => {
 module.exports = {
     compile,
     loadImg,
-    calculateWitness,
+    formatToBits,
+    calcWitnessAndProve,
+    calculateWitness
 }

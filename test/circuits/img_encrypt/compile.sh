@@ -1,5 +1,5 @@
 #!/bin/bash
-for px in 28 # 240 480 1024 
+for px in 28 56 112 
 do
 	echo
 	FILE=aes_${px}px_256_ctr_test.circom

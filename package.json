@@ -8,9 +8,11 @@
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/_mocha --timeout 1000000",
-    "test-image": "node node_modules/mocha/bin/_mocha --grep='Should carry out bench correctly' --timeout 1000000",
+    "test-image": "node node_modules/mocha/bin/_mocha --grep='Time witness' --timeout 1000000",
     "lint-check": "eslint test/*.test.js",
-    "lint": "eslint test/*.test.js --fix"
+    "lint": "eslint test/*.test.js --fix",
+    "zkey-0:28px": "npx snarkjs groth16 setup test/circuits/img_encrypt/aes_28px_256_ctr_test.r1cs test/circuits/img_encrypt/powersOfTau28_hez_final_22.ptau test/zkeys/aes_28px_256_ctr_test_0.zkey",
+    "zkey-1:28px": "npx snarkjs zkey contribute test/zkeys/aes_28px_256_ctr_test_0.zkey test/zkeys/aes_28px_256_ctr_test_1.zkey --name='npm' -v -e='npx'"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "mocha-logger": "^1.0.8"
   },
   "dependencies": {
-    "jpeg-js": "^0.4.4"
+    "jpeg-js": "^0.4.4",
+    "snarkjs": "^0.6.11"
   }
 }
