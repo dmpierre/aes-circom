@@ -12,7 +12,11 @@
     "lint-check": "eslint test/*.test.js",
     "lint": "eslint test/*.test.js --fix",
     "zkey-0:28px": "npx snarkjs groth16 setup test/circuits/img_encrypt/aes_28px_256_ctr_test.r1cs test/circuits/img_encrypt/powersOfTau28_hez_final_22.ptau test/zkeys/aes_28px_256_ctr_test_0.zkey",
-    "zkey-1:28px": "npx snarkjs zkey contribute test/zkeys/aes_28px_256_ctr_test_0.zkey test/zkeys/aes_28px_256_ctr_test_1.zkey --name='npm' -v -e='npx'"
+    "zkey-1:28px": "npx snarkjs zkey contribute test/zkeys/aes_28px_256_ctr_test_0.zkey test/zkeys/aes_28px_256_ctr_test_1.zkey --name='npm' -v -e='npx'",
+    "zkey-0:56px": "npx snarkjs groth16 setup test/circuits/img_encrypt/aes_56px_256_ctr_test.r1cs test/circuits/img_encrypt/powersOfTau28_hez_final_24.ptau test/zkeys/aes_56px_256_ctr_test_0.zkey",
+    "zkey-1:56px": "npx snarkjs zkey contribute test/zkeys/aes_56px_256_ctr_test_0.zkey test/zkeys/aes_56px_256_ctr_test_1.zkey --name='npm' -v -e='npx'",
+    "zkey-0:112px": "npx snarkjs groth16 setup test/circuits/img_encrypt/aes_112px_256_ctr_test.r1cs test/circuits/img_encrypt/powersOfTau28_hez_final_26.ptau test/zkeys/aes_112px_256_ctr_test_0.zkey",
+    "zkey-1:112px": "npx snarkjs zkey contribute test/zkeys/aes_112px_256_ctr_test_0.zkey test/zkeys/aes_112px_256_ctr_test_1.zkey --name='npm' -v -e='npx'"
   },
   "repository": {
     "type": "git",
